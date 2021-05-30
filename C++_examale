@@ -1,0 +1,57 @@
+#include <cstring>
+class Vector {
+    int* arr;
+    int capacity;
+    int current;
+
+public:
+    Vector() {
+        arr = new int[1];
+        capacity = 1;
+        current = 0;
+    }
+    Vector(Vector &b) {
+        arr = new int[1];
+        capacity = 1;
+        current = 0;
+        for (int i = 0; i != b.current; ++i) {
+            (*this).push_back(b.arr[i]);
+        }
+    }
+    void push_back(int data) {
+        if (current == capacity) {
+            int* temp = new int[2 * capacity];
+            for (int i = 0; i < capacity; i++) {
+                temp[i] = arr[i];
+            }
+            delete[] arr;
+            capacity *= 2;
+            arr = temp;
+        }
+        arr[current] = data;
+        current++;
+    }
+    auto& operator[] (int index) {
+        return this->arr[index];
+    }
+
+
+    void pop_back() {
+        current--;
+    }
+
+    size_t size() {
+        return static_cast<size_t>(current);
+    }
+    void operator= (Vector &b) {
+        for (int i = current; i != 0; --i) {
+            (*this).pop_back();
+        }
+        for (int i = 0; i != b.current; ++i) {
+            (*this).push_back(b.arr[i]);
+        }
+    }
+    ~Vector() {
+        delete[] arr;
+    }
+};
